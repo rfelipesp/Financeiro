@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="/layout/layoutpadrao">
+
+<section layout:fragment="conteudo">
+	<div class="container">
+		<div class="section">
+
+			<h4>Pesquisa de título</h4>
+			
+			<div class="row">
+				<form class="col s12" method="get" th:action="@{/titulos}" th:object="${titulo}">
+					<div class="row m12 s12">
+						<div class="card hoverable">
+							<div class="row">
+								<div class="card-content black-text">
+									<div class="input-field col m6 s12 l6">
+										<i class="material-icons prefix">account_circle</i>
+										<input id="icon-prefix" type="text" th:field="*{descricao}">
+										<label for="icon-prefix">Informe a descrição</label>
+									</div>
+									<div class="input-field col s12 m6">
+										<select class="validate" id="entidade" type="text"
+												th:field="*{entidade}">
+											<option value="" selected="selected">Selecione a entidade</option>
+											<option th:each="entidade :${listaDeEntidades}"
+													th:text="${entidade.nome}"
+													th:value="${entidade.codigo}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="card-content black-text">
+									<div class="input-field col s12 m6">
+										<select class="validate" id="tipo" type="text"
+													th:field="*{tipo}">
+											<option value="" selected="selected">Selecione o tipo do movimento</option>
+											<option th:each="tipo : ${todosOsTipos}"
+													th:text="${tipo.descricao}"
+													th:value="${tipo}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="card-action">
+								<button class="btn waves-effect #311b92 deep-purple darken-4 waves-light" type="submit" name="action">
+									Pesquisar <i class="material-icons right">send</i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="row">
+				<div class="col s12 m12">
+					<div class="card heverable">
+						<div class="card-content black-text">
+							<span class="card-title">Títulos</span>
+
+							<table class="responsive-table highlight">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Cliente</th>
+									<th>Descrição</th>
+									<th>Data de validade</th>
+									<th>Data de pagamento</th>
+									<th>Valor</th>
+									<th>Valor pago</th>
+									<th>Tipo de movimento</th>
+									<th>Situação</th>
+									<th>Tipo de pagamento</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="titulo : ${titulos}">
+										<td th:text="${titulo.codigo}"></td>
+										<td th:text="${titulo.entidade.nome}"></td>
+										<td th:text="${titulo.descricao}"></td>
+										<td th:text="${{titulo.dataDeValidade}}"></td>
+										<td th:text="${{titulo.dataDePagamento}}"></td>
+										<td th:text="|R$ ${{titulo.valor}} |"></td>
+										<td th:text="|R$ ${{titulo.valorPago == null ? 0 : titulo.valorPago}} |"></td>
+										<td th:text="${titulo.tipo.descricao}"></td>
+										<td th:text="${titulo.situacao.descricao}"></td>
+										<td th:text="${titulo.tipoDePagamento.descricao}"></td>
+										<td>
+											<a class="tooltipped" data-position="top" data-delay="50" 
+													th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}" data-tooltip="Editar">
+												<i class="tiny material-icons">mode_edit</i>
+											</a>
+											<a class="tooltipped js-remover-titulo-btn modal-trigger"
+											href="#modal-remover-titulo"
+											th:attr="data-codigo=${titulo.codigo}, data-nome=${titulo.descricao}"
+										    data-position="top" data-delay="50" data-tooltip="Apagar"
+											style="margin-left: 9px"> <i class="tiny material-icons">delete</i>
+										</a>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="9" th:if="${#lists.isEmpty(titulos)}">Nenhum título encontrado!</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal Estrutura -->
+	<div id="modal-remover-titulo" class="modal">
+		<div class="modal-content">
+			<h4>Exclusão de título</h4>
+			<span>Tem certeza que deseja remover o título ? </span>
+		</div>
+		<div class="modal-footer">
+			<form th:attr="data-url-remover=@{/titulos}" method="post">
+
+				<a href="#!"
+				   class="modal-action modal-close waves-effect waves-light btn teal darken-3">Não
+				</a>
+				<button type="submit"
+						class="modal-action modal-close waves-effect waves-light btn #311b92 deep-purple darken-4"
+						style="margin: 6px">Sim
+				</button>
+
+			</form>
+		</div>
+	</div>
+
+</section>
+
+<th:block layout:fragment="js-fragment1">
+	<script th:src="@{/js/financeiro.js}"></script>
+</th:block>
+</html>

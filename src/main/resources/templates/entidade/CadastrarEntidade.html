@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="/layout/layoutpadrao">
+
+<head>
+	<title th:text="${codigo == null ? 'Cadastro de entidade' : 'Edição de entidade'}"></title>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="container">
+		<div class="section">
+			<div layout:insert="/fragments/mensageminfo"></div>
+			<h4 th:text="${codigo == null ? 'Cadastro de entidade' : 'Edição de entidade'}"></h4>
+			<div class="row">
+				<div class="col s12 m12">
+					<div class="card hoverable">
+						<div class="card-content black-text">
+							<span class="card-title" th:text="${codigo == null ? 'Cadastro de entidade' : 'Edição de entidade'}">Cadastro de Entidade</span>
+							
+							<div class="row">
+								<form class="col s12"  method="post" th:action="@{/entidades/novo}" th:object="${entidade}">
+									<div class="row">
+									<input type="hidden" th:field="*{codigo}">
+										<div class="row">
+											<div class="input-field col s6">
+												<input id="nome" type="text" class="validate"
+													   th:field="*{nome}"
+													   th:classappend="${#fields.hasErrors('nome')} ? invalid">
+												<label for="nome">Nome</label>
+												<span class="helper-text" data-error="Nome é obrigatório"></span>
+											</div>
+											<div class="input-field col s6">
+												<input id="cpfOuCnpj" type="text" class="validate"
+													   th:field="*{cpfOuCnpj}"
+													   th:classappend="${#fields.hasErrors('cpfOuCnpj')} ? invalid">
+												<label for="cpfOuCnpj">CPF/CNPJ</label>
+												<span class="helper-text" data-error="CPF/CNPJ é obrigatório"></span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="input-field col s6">
+												<select class="validate" id="estado" type="text"
+														th:field="*{estado}">
+													<option value="" selected="selected" disabled="disabled">Selecione o Estado</option>
+													<option value="SP">São Paulo</option>
+													<option value="RJ">Rio de Janeiro</option>
+													<option value="MG">Minas Gerais</option>
+												</select>
+												<label>Estado</label>
+											</div>
+											<div class="input-field col s6">
+												<select class="validate" id="cidade" type="text"
+														th:field="*{cidade}">
+													<option value="" selected="selected" disabled="disabled">Selecione a Cidade</option>
+													<option value="São Paulo">São Paulo</option>
+													<option value="Campinas">Campinas</option>
+													<option value="Guarulhos">Guarulhos</option>
+												</select>
+												<label>Cidade</label>
+											</div>
+										</div>
+										<div class="row">
+											<div class="input-field col s6">
+												<input id="endereco" type="text" class="validate"
+													   th:field="*{endereco}"
+													   th:classappend="${#fields.hasErrors('endereco')} ? invalid">
+												<label for="endereco">Endereço</label>
+												<span class="helper-text" data-error="Endereço é obrigatório"></span>
+											</div>
+											<div class="input-field col s6">
+												<input id="bairro" type="text" class="validate"
+													   th:field="*{bairro}"
+													   th:classappend="${#fields.hasErrors('bairro')} ? invalid">
+												<label for="bairro">Bairro</label>
+												<span class="helper-text" data-error="Bairro é obrigatório"></span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="input-field col s6">
+												<input id="telefone" type="text" class="validate"
+													   th:field="*{telefone}"
+													   th:classappend="${#fields.hasErrors('telefone')} ? invalid">
+												<label for="telefone">Telefone</label>
+												<span class="helper-text" data-error="Telefone é obrigatório"></span>
+											</div>
+											<div class="input-field col s6">
+												<input id="email" type="email" class="validate"
+													   th:field="*{email}"
+													   th:classappend="${#fields.hasErrors('email')} ? invalid">
+												<label for="email">E-mail</label>
+												<span class="helper-text" data-error="E-mail é obrigatório" data-success="E-mail válido"></span>
+											</div>
+										</div>
+
+									</div>
+									<button class="btn waves-effect #311b92 deep-purple darken-4 waves-light" type="submit" name="action">
+										Salvar <i class="material-icons right">send</i>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<th:block layout:fragment="js-fragment1">
+	<script th:src="@{/js/financeiro.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+
+<nav class="#311b92 deep-purple darken-4" role="navigation">
+	<div class="nav-wrapper container">
+		<a id="logo-container" href="#" class="brand-logo">Logo</a>
+		<ul class="right hide-on-med-and-down">
+			<li><a th:href="@{/entidades}">Entidade</a></li>
+			<li><a th:href="@{/titulos}">Título</a></li>
+			<li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
+		</ul>
+		<ul id="dropdown1" class="dropdown-content">
+			<li><a th:href="@{/entidades/novo}">Entidade</a></li>
+			<li><a th:href="@{/titulos/novo}">Título</a></li>
+		</ul>
+		<ul id="nav-mobile" class="sidenav">
+			<li><a th:href="@{/entidades}">Entidade</a></li>
+			<li><a th:href="@{/titulos}">Título</a></li>
+			<li><a class="dropdown-trigger" href="#!" data-target="dropdown2">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
+		</ul>
+		<a href="#" data-target="nav-mobile" class="sidenav-trigger">
+		<i class="material-icons">menu</i></a>
+	</div>
+</nav>
+
+
+
+
+
+</html>
