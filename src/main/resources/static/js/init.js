@@ -57,6 +57,9 @@ $('.dropdown-trigger').dropdown({
     coverTrigger: false
 });
 
+$(document).ready(function(){
+    $('.collapsible').collapsible();
+});
 
 
 
