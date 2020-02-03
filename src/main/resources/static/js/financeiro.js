@@ -4,8 +4,8 @@ var Financeiro = Financeiro || {};
 Financeiro.DialogoDeRemocao = (function () {
 
     function DialogoDeRemocao() {
-        this.modal = $('#modal-remover-entidade');
-        this.botaoRemover = $('.js-remover-entidade-btn');
+        this.modal = $('#modal-remover');
+        this.botaoRemover = $('.js-remover-btn');
         this.alertInfo = $('#info');
         this.alertErro = $('#erro');
     }
@@ -31,7 +31,7 @@ Financeiro.DialogoDeRemocao = (function () {
         form.attr('action', action + codigo);
 
         this.modal.find('.modal-content span').
-        html('Tem certeza que deseja remover a entidade <strong> ' + nome + '</strong> ?');
+        html('Tem certeza que deseja remover:  <strong> ' + nome + '</strong> ?');
     }
 
     function onDoubleClickInfo(evento) {

@@ -6,6 +6,14 @@
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 
+$(function () {
+    $('input.js-moeda').maskMoney({
+        decimal: ',',
+        thousands: '.',
+        allowZero: true
+    });
+});
+
 $(document).ready(function(){
     $('.datepicker').datepicker({
         i18n: {
@@ -28,7 +36,6 @@ $(document).ready(function(){
         format: 'dd/mm/yyyy',
         formatsubmit: 'dd/mm/yyyy',
         container: 'body',
-        minDate: new Date(),
     });
 });
 

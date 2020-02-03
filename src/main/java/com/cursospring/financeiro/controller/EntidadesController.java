@@ -1,21 +1,22 @@
 package com.cursospring.financeiro.controller;
 
-import javax.validation.Valid;
-
 import com.cursospring.financeiro.dto.EntidadeDto;
+import com.cursospring.financeiro.exception.NegocioException;
+import com.cursospring.financeiro.model.Entidade;
+import com.cursospring.financeiro.page.PageWrapper;
+import com.cursospring.financeiro.repository.EntidadeRepository;
+import com.cursospring.financeiro.service.EntidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cursospring.financeiro.model.Entidade;
-import com.cursospring.financeiro.repository.EntidadeRepository;
-import com.cursospring.financeiro.service.EntidadeService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -36,7 +37,7 @@ public class EntidadesController {
 	}
 	
 	@PostMapping("/novo")
-	public String salvar(@Valid Entidade entidade, BindingResult result, RedirectAttributes attributes)	 {
+		public String salvar(@Valid Entidade entidade, BindingResult result, RedirectAttributes attributes)	 {
 		
 		if(result.hasErrors()) {
 			// Mostrar a mensagem de erro.
@@ -50,17 +51,15 @@ public class EntidadesController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(Entidade entidade) {
-		
-		
-		ModelAndView modelAndView = new ModelAndView("entidade/PesquisarEntidade");	
-		
-		if(entidade.getNome() == null) {
-			modelAndView.addObject("entidades", entidadeRepository.findByNomeQuery(entidade.getNome()));
-		}else {
-			modelAndView.addObject("entidades", entidadeRepository.findByNomeContainingIgnoreCase(entidade.getNome()));
-		}
-		
+	public ModelAndView pesquisar(Entidade entidade, @PageableDefault(size = 2) Pageable pageable,
+									HttpServletRequest httpServletRequest) {
+
+		ModelAndView modelAndView = new ModelAndView("entidade/PesquisarEntidade");
+		String nome = entidade.getNome() == null ? "%" : entidade.getNome().toUpperCase();
+		PageWrapper<Entidade> pageWrapper =
+				new PageWrapper<>(entidadeRepository.findByNomeQuery(nome, pageable), httpServletRequest);
+
+		modelAndView.addObject("pagina", pageWrapper);
 		return modelAndView;
 	}
 	
@@ -74,9 +73,17 @@ public class EntidadesController {
 	
 
 	@PostMapping(value = "/{codigo}")
-	public String excluir(@PathVariable("codigo") Long codigo) {
-		entidadeService.remover(codigo);
-		return "redirect:/entidades"; 
+	public String excluir(@PathVariable("codigo") Long codigo, RedirectAttributes attributes) {
+
+		try {
+			entidadeService.remover(codigo);
+			attributes.addFlashAttribute("mensagem", "Entidade excluída com sucesso");
+		}catch (NegocioException exception){
+			attributes.addFlashAttribute("mensagemErro", exception.getMessage());
+		}
+
+
+		return "redirect:/entidades";
 	}
 
 	@GetMapping("/filtro")

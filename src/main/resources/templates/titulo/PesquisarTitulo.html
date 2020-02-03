@@ -8,8 +8,9 @@
 	<div class="container">
 		<div class="section">
 
+			<div layout:insert="/fragments/mensagemInfo"></div>
 			<h4>Pesquisa de título</h4>
-			
+
 			<div class="row">
 				<form class="col s12" method="get" th:action="@{/titulos}" th:object="${titulo}">
 					<div class="row m12 s12">
@@ -76,7 +77,7 @@
 								</tr>
 								</thead>
 								<tbody>
-									<tr th:each="titulo : ${titulos}">
+									<tr th:each="titulo : ${pagina.conteudo}">
 										<td th:text="${titulo.codigo}"></td>
 										<td th:text="${titulo.entidade.nome}"></td>
 										<td th:text="${titulo.descricao}"></td>
@@ -92,8 +93,8 @@
 													th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}" data-tooltip="Editar">
 												<i class="tiny material-icons">mode_edit</i>
 											</a>
-											<a class="tooltipped js-remover-titulo-btn modal-trigger"
-											href="#modal-remover-titulo"
+											<a class="tooltipped js-remover-btn modal-trigger"
+											href="#modal-remover"
 											th:attr="data-codigo=${titulo.codigo}, data-nome=${titulo.descricao}"
 										    data-position="top" data-delay="50" data-tooltip="Apagar"
 											style="margin-left: 9px"> <i class="tiny material-icons">delete</i>
@@ -101,18 +102,21 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="9" th:if="${#lists.isEmpty(titulos)}">Nenhum título encontrado!</td>
+										<td colspan="9" th:if="${pagina.vazia}">Nenhum título encontrado!</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>					
 					</div>
 				</div>
+
+				<div th:replace="/fragments/paginacao :: Pagination (${pagina})"></div>
+
 			</div>
 		</div>
 	</div>
 	<!-- Modal Estrutura -->
-	<div id="modal-remover-titulo" class="modal">
+	<div id="modal-remover" class="modal">
 		<div class="modal-content">
 			<h4>Exclusão de título</h4>
 			<span>Tem certeza que deseja remover o título ? </span>

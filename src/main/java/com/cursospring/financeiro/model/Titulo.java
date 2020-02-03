@@ -1,6 +1,7 @@
 package com.cursospring.financeiro.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,12 +35,15 @@ public class Titulo {
 	@Column(name = "data_de_pagamento")
 	private Date dataDePagamento;
 
+	@NumberFormat(pattern = "#,##0.00")
 	@NotNull
 	private BigDecimal valor;
-	
+
+	@NumberFormat(pattern = "#,##0.00")
 	@Column(name = "valor_pago")
 	private BigDecimal valorPago;
-	
+
+	@NumberFormat(pattern = "#,##0.00")
 	@Column(name = "valor_original")
 	private BigDecimal valorOriginal;
 	
